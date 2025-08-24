@@ -12,7 +12,7 @@ const tailwindConfig: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }
 
 export default tailwindConfig
