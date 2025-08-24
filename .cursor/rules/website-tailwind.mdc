@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+---
+# Tailwind CSS Rules
+
+## Setup
+- Tailwind content globs should include `./pages/**/*.{js,ts,jsx,tsx}` and `./components/**/*.{js,ts,jsx,tsx}`.
+- Import Tailwind layers in `styles/globals.css` in this order: `@tailwind base; @tailwind components; @tailwind utilities;`.
+
+## Theme
+- Colors
+  - Primary: `#4F46E5` (indigo)
+  - Background: `#FFFFFF` or `#F9FAFB`
+  - Text (body): `#1F2937` with subtler text `#4B5563`
+- Typography
+  - Use Inter or Manrope via `next/font`.
+  - Set the font on `<body>` and rely on Tailwind `font-sans`.
+
+Extend `tailwind.config.js` minimally, e.g.:
+```
+theme: {
+  extend: {
+    colors: {
+      primary: '#4F46E5',
+    },
+  },
+}
+```
+
+## Conventions
+- Prefer utility classes; avoid custom CSS unless global typography or resets.
+- Use the `container` utility with appropriate responsive paddings for section widths.
+- Build repeatable patterns (e.g., section spacing, grid gaps) with small composition classes, not custom CSS.
+- Keep class lists readable: group by box model, layout, typography, color, state.
+
+## Components
+- Hero, Features, Demo, CTA should be responsive by default (sm/md/lg breakpoints).
+- Use semantic spacing scale (e.g., `py-16 md:py-24`).
+- Use accessible color contrast; validate primary on light background.
+
+## Performance
+- Avoid arbitrary values unless justified; prefer theme tokens.
+- Remove unused classes by keeping content globs accurate.
+
+## References
+- Visual/UX direction: [WEBSITE_DESIGN_PLAN.md](mdc:prompt-scripter/docs/WEBSITE_DESIGN_PLAN.md)
+

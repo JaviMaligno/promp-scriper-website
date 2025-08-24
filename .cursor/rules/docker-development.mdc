@@ -1,0 +1,70 @@
+---
+alwaysApply: true
+---
+
+## Docker Development Rules
+
+Goal: Develop everything in containers to avoid local installs and ensure consistent environments on Windows/macOS/Linux.
+
+### General
+- Prefer Docker Compose for all services; avoid host Node/Python.
+- Use `docker compose` (v2). For one-off commands, use `docker compose exec <service> <cmd>`.
+- Map the project directory as a bind mount; keep `node_modules` inside the container via an anonymous volume.
+
+### Website (Next.js + Tailwind)
+- Compose file path: `prompt-scripter-website/docker-compose.yml`.
+- If missing, create it using this baseline (Node 20 LTS):
+```yaml
+services:
+  web:
+    image: node:20-bullseye-slim
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=0
+      - WATCHPACK_POLLING=false
+      - NEXT_TELEMETRY_DISABLED=1
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: sh -lc "if [ ! -d node_modules ]; then npm ci || npm install; fi; npm run dev -- -p 3000"
+```
+
+Usage from `prompt-scripter-website/`:
+- Start: `docker compose up -d`
+- Logs: `docker compose logs -f`
+- Shell: `docker compose exec web sh`
+- Scripts: `docker compose exec web npm run <script>`
+- If hot reload fails on Windows/macOS, set `CHOKIDAR_USEPOLLING=1` and `WATCHPACK_POLLING=true`.
+
+### Extension and Backend
+- Use root compose files when applicable:
+  - Dev/extension: `docker compose -f docker-compose.extension.yml up --build -d`
+  - Prod-like: `docker compose -f docker-compose.prod.yml up --build -d`
+- Backend Dockerfiles: `extension-backend.Dockerfile`, `extension-backend.prod.Dockerfile`.
+
+### Node/Next compatibility
+- Next.js 14 needs Node >= 18.17.0. Node 20 image satisfies this regardless of host Node version.
+
+### Volumes & installs
+- Bind mount source `./:/app`.
+- Use anonymous volume for `/app/node_modules` to keep native modules containerized.
+- Prefer `npm ci` when lockfile exists; fall back to `npm install` otherwise.
+
+### Ports & networking
+- Website default: 3000 → `http://localhost:3000`.
+- If busy, override mapping or port via compose.
+
+### One-off scaffolding inside containers
+- Bootstrap Next.js inside the container if needed:
+  - `docker compose run --rm web npx create-next-app@latest . --ts --eslint --tailwind --use-npm --src-dir=false --import-alias "@/*" --app=false`
+
+### Windows notes
+- Run compose from the project directory to avoid path issues.
+- Enable polling if file changes are not detected.
+
+### Security & housekeeping
+- Do not bake secrets into images. Use `.env` or platform secrets.
+- Add `node_modules` and `.next` to `.dockerignore` when building images.
+

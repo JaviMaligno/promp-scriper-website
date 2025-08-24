@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+# Prompt Scripter Website — Project Structure
+
+This rule defines the directory layout and file conventions for the website app. It aligns with the plan in
+[WEBSITE_DESIGN_PLAN.md](mdc:prompt-scripter/docs/WEBSITE_DESIGN_PLAN.md).
+
+## Tech baseline
+- Next.js (pages router)
+- Tailwind CSS
+- TypeScript preferred (JavaScript allowed initially; migrate progressively)
+
+## Required directories
+```
+/pages
+  _app.tsx            # global layout wrapper
+  _document.tsx       # fonts + HTML lang/dir
+  index.tsx           # landing page
+  privacy.tsx         # privacy policy page
+/components
+  /layout             # Navbar.tsx, Footer.tsx
+  /sections           # Hero.tsx, Features.tsx, Demo.tsx, CTA.tsx
+/public               # static assets (images, icons, video)
+/styles
+  globals.css         # Tailwind base/components/utilities
+```
+
+## Conventions
+- Pages export default React components. Components export named components.
+- Section components live in `components/sections` and stay presentation-only.
+- Cross-cutting UI (Navbar/Footer) lives in `components/layout`.
+- Prefer colocating small utilities with components rather than creating deep `utils/` trees.
+- Assets go in `public/`; reference with `/...` absolute paths. Use `next/image` for raster images where appropriate.
+
+## Routing
+- Use the Next.js pages router only (no `app/` directory).
+- Keep the site static when possible. Prefer SSG; avoid runtime SSR unless strictly needed.
+- Add new top-level pages under `pages/` with kebab-case filenames mapping to routes.
+
+## Styling
+- Tailwind-first. Avoid custom CSS except for resets or global typography in `styles/globals.css`.
+- Reuse utility classes and small composition patterns (e.g., card, container) rather than bespoke CSS.
+
+## Fonts & i18n
+- Load fonts via `next/font` in `_app.tsx` or `_document.tsx`.
+- Set `<html lang="en">` in `_document.tsx`. Prepare for RTL by not hardcoding left/right paddings; prefer logical properties.
+
+## Accessibility & SEO
+- Semantic HTML sectioning: header, main, section, footer.
+- Single H1 per page. Use `next/head` for title/description and social meta tags.
+
+## References
+- Design and content plan: [WEBSITE_DESIGN_PLAN.md](mdc:prompt-scripter/docs/WEBSITE_DESIGN_PLAN.md)
+

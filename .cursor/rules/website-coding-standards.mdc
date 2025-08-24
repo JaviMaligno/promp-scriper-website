@@ -1,0 +1,49 @@
+---
+alwaysApply: true
+---
+# Website Coding Standards
+
+## Language & modules
+- Prefer TypeScript for all new files (`.ts`, `.tsx`). Allow JS during bootstrap; migrate incrementally.
+- Use function components with React Hooks; avoid classes.
+- For pages: default export the page component. For shared components: use named exports.
+
+## Typing & props
+- Define explicit `Props` interfaces for components. Avoid `any`.
+- Narrow props and lift state only when necessary. Avoid overusing context.
+
+## Imports & structure
+- Keep imports ordered: React/Next, third-party, absolute app paths, relative paths.
+- Do not use deep relative paths when avoidable; prefer absolute aliases once configured.
+
+## Data & side effects
+- Prefer static content. If data is needed, use SSG (`getStaticProps`) or static JSON.
+- Avoid client-side data fetching unless interactive behavior requires it.
+- Never block rendering with unnecessary `await` in effects.
+
+## Accessibility
+- Always provide `alt` text for images and `aria-label` for icon-only buttons.
+- Maintain proper heading hierarchy; one H1 per page.
+- Ensure focus states are visible; maintain keyboard navigability.
+
+## SEO
+- Use `next/head` for `<title>`, `<meta name="description">`, and Open Graph/Twitter tags on pages.
+- Use canonical URLs and descriptive titles.
+
+## Next.js usage
+- Use `next/image` for optimized images from `/public` or approved domains.
+- Use `next/link` for internal navigation.
+- Keep `_app.tsx` lightweight; global providers only.
+
+## Error handling & security
+- Guard external links with `rel="noopener noreferrer"` when `target="_blank"`.
+- Sanitize any untrusted HTML; avoid `dangerouslySetInnerHTML`.
+- Avoid exposing secrets; only `NEXT_PUBLIC_` variables may be used client-side.
+
+## Linting/format
+- Follow Next.js ESLint defaults and Prettier formatting.
+- Keep components small and focused; aim for clarity and readability.
+
+## References
+- Overall plan and layout: [WEBSITE_DESIGN_PLAN.md](mdc:prompt-scripter/docs/WEBSITE_DESIGN_PLAN.md)
+

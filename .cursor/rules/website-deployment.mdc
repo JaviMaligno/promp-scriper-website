@@ -1,0 +1,31 @@
+---
+alwaysApply: false
+---
+# Deployment & Operations (Vercel)
+
+## Hosting
+- Deploy via Vercel connected to the GitHub repo. `main` → production, PRs → preview.
+- Build command: `next build`. Output: static Next.js site served by Vercel.
+
+## Environment
+- Client-visible env vars must be prefixed with `NEXT_PUBLIC_`.
+- Configure image domains in `next.config.js` if using remote images; prefer `/public` assets when possible.
+
+## Quality gates
+- Enable Next.js ESLint during CI/Vercel builds.
+- Treat TypeScript errors as build errors once TS is enabled.
+
+## Performance
+- Use `next/image` for responsive images; provide `sizes` for hero/gallery.
+- Leverage static generation. Avoid server-side rendering unless necessary.
+
+## SEO & Metadata
+- Provide `robots.txt` and `sitemap.xml` when URLs stabilize.
+- Ensure proper Open Graph/Twitter meta on the homepage.
+
+## Monitoring
+- Enable Vercel Analytics (optional). Monitor core web vitals in previews before promotion.
+
+## References
+- Source plan: [WEBSITE_DESIGN_PLAN.md](mdc:prompt-scripter/docs/WEBSITE_DESIGN_PLAN.md)
+

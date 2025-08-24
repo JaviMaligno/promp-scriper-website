@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+description: Always use Windows PowerShell-compatible commands for any terminal usage in this workspace.
+---
+## Windows PowerShell Command Rules
+
+- **Host shell**: Assume commands run in Windows PowerShell (not bash/cmd). Write PowerShell-compatible one-liners.
+- **Chaining**: Use `;` to chain commands. Avoid `&&`/`||` for compatibility.
+- **Env vars**:
+  - Set: `$env:NAME = "value"`
+  - Read: `$env:NAME`
+  - Do not use `export NAME=value`.
+- **Quoting & paths**: Quote paths with spaces. Prefer relative paths. Forward slashes are acceptable in most tools, but ensure commands remain valid in PowerShell.
+- **Non-interactive**: Prefer non-interactive flags (e.g., `--yes`, `-y`, `--no-input`). Assume no TTY prompts.
+- **No pagers**: If a command might page output, append `| cat` (PowerShell `cat` alias maps to `Get-Content`).
+- **Background/long-running**: Clearly mark long-running commands. When tooling supports it, use background/run-as-daemon flags; otherwise state that it runs until stopped.
+
+### Docker usage (consistent with repo rules)
+- Use `docker compose` v2 (not `docker-compose`).
+- Run from the correct project directory before invoking compose.
+- One-offs: `docker compose exec <service> <cmd>`.
+
+### Node & npm
+- Prefer `npm run <script>` for scripts. Use `npx --yes <tool>` only when necessary.
+- Do not rely on bash-specific syntax in host commands.
+
+### Windows file operations
+- Create directory: `New-Item -ItemType Directory -Force -Path <dir>`
+- Copy/move: `Copy-Item`, `Move-Item`
+- Delete: `Remove-Item -Recurse -Force`
+- File IO: `Get-Content`, `Set-Content`, `Out-File -Encoding utf8`
+
+### Prohibited host-shell patterns
+- Do not emit POSIX-only builtins in host commands: `export`, backtick command substitution, process substitution, here-docs, `source`, `&&`/`||` conditionals.
+
+Notes:
+- Commands executed inside Linux containers (e.g., `docker compose exec web sh -lc "..."`) may use POSIX shell; only the host command must be PowerShell-compatible.
