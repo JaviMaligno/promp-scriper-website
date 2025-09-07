@@ -6,3 +6,38 @@ body,
 #__next {
     height: 100%;
 }
+
+/* Markdown anchor link styling */
+.prose h1 .anchor,
+.prose h2 .anchor,
+.prose h3 .anchor,
+.prose h4 .anchor,
+.prose h5 .anchor,
+.prose h6 .anchor {
+  @apply no-underline text-gray-400 ml-2 align-middle;
+}
+.prose h1:hover .anchor,
+.prose h2:hover .anchor,
+.prose h3:hover .anchor,
+.prose h4:hover .anchor,
+.prose h5:hover .anchor,
+.prose h6:hover .anchor {
+  @apply text-gray-500;
+}
+
+/* Print-friendly styles for policy pages */
+@media print {
+  :root { color-scheme: light; }
+  html, body { background: #fff !important; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header, footer, .no-print { display: none !important; }
+  main { max-width: none !important; padding: 0 !important; }
+  .prose { color: #000 !important; }
+  .prose a { color: #000 !important; text-decoration: underline !important; }
+  .prose pre { white-space: pre-wrap !important; word-break: break-word; }
+  .prose code { white-space: pre-wrap !important; }
+  .prose h1, .prose h2, .prose h3 { page-break-after: avoid; break-after: avoid; }
+  .prose table { page-break-inside: avoid; break-inside: avoid; }
+  .prose img { page-break-inside: avoid; break-inside: avoid; }
+  .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.9em; }
+}

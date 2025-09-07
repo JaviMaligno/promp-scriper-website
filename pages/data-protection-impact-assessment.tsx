@@ -1,22 +1,22 @@
 import { MarkdownPage } from '@/components/MarkdownPage'
 import { readMarkdownFromPublic } from '@/lib/md'
 
-interface PrivacyProps {
+interface PageProps {
   readonly content: string
   readonly lastUpdated?: string
 }
 
 export async function getStaticProps() {
-  const { content, lastUpdated } = readMarkdownFromPublic('Privacy Policy.md')
+  const { content, lastUpdated } = readMarkdownFromPublic('Data Protection Impact Assessment.md')
   return { props: { content, lastUpdated } }
 }
 
-export default function Privacy({ content, lastUpdated }: PrivacyProps) {
+export default function DPIA({ content, lastUpdated }: PageProps) {
   return (
     <MarkdownPage
-      title="Privacy Policy"
-      description="Privacy policy for the Prompt Scripter extension."
-      path="/privacy"
+      title="Data Protection Impact Assessment"
+      description="DPIA for Prompt Scripter."
+      path="/data-protection-impact-assessment"
       content={content}
       lastUpdated={lastUpdated}
     />

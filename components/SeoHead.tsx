@@ -5,9 +5,10 @@ interface SeoHeadProps {
   readonly title?: string
   readonly description?: string
   readonly path?: string
+  readonly noindex?: boolean
 }
 
-export function SeoHead({ title, description, path }: SeoHeadProps) {
+export function SeoHead({ title, description, path, noindex }: SeoHeadProps) {
   const fullTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME
   const url = path ? `${SITE_URL}${path}` : SITE_URL
   const desc = description || DEFAULT_DESCRIPTION
@@ -17,6 +18,7 @@ export function SeoHead({ title, description, path }: SeoHeadProps) {
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
       <link rel="canonical" href={url} />
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       <meta property="og:type" content="website" />
       <meta property="og:title" content={fullTitle} />
@@ -31,5 +33,4 @@ export function SeoHead({ title, description, path }: SeoHeadProps) {
     </Head>
   )
 }
-
 
