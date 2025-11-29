@@ -36,7 +36,7 @@ export function MarkdownPage({ title, description, path, content, lastUpdated, n
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[
               rehypeSlug,
-              [rehypeAutolinkHeadings, { behavior: 'append' }],
+              [rehypeAutolinkHeadings as any, { behavior: 'append' }],
             ]}
             components={{
               a: ({ href, children, ...props }: any) => {
